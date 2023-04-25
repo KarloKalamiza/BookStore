@@ -1,0 +1,9 @@
+0001,The Bible,Various authors,SF,The holy scripture of Christianity, the Bible is the world's best-selling book of all time.
+0002,Don Quixote,Miguel de Cervantes,historic,A Spanish novel published in 1605, considered one of the greatest works of fiction ever written.
+0003,The Lord of the Rings,J.R.R. Tolkien,SF,A fantasy novel published in 1954, considered a classic of the genre and one of the most influential books of the 20th century.
+0004,Harry Potter and the Philosopher's Stone,J.K. Rowling,SF,The first novel in the Harry Potter series, which has become a cultural phenomenon and a beloved classic of children's literature.
+0005,To Kill a Mockingbird,Harper Lee,SF,A Pulitzer Prize-winning novel published in 1960, which has become a classic of American literature and a touchstone for discussions of race and justice.
+0006,The Catcher in the Rye,J.D. Salinger,drama, A controversial novel published in 1951, which has become a touchstone for discussions of teenage angst and disillusionment.
+0007,1984,George Orwell,drama,A dystopian novel published in 1949, which has become a classic of political and social commentary.
+0008,Pride and Prejudice,Jane Austen,romantic, A romantic novel published in 1813, which has become a classic of English literature and a touchstone for discussions of gender roles and social class.
+0009,The Diary of a Young Girl,Anne Frank,diary,A diary written by a young Jewish girl during the Nazi occupation of the Netherlands, which has become a classic of Holocaust literature and a testament to the resilience of the human spirit.

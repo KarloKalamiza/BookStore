@@ -8,21 +8,21 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox alignment="CENTER" prefHeight="464.0" prefWidth="597.0" spacing="20.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/19" fx:controller="com.example.bookstore.HelloController">
+<VBox alignment="CENTER" prefHeight="464.0" prefWidth="597.0" spacing="20.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.bookstore.HelloController">
     <padding>
         <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
     </padding>
    <Pane prefHeight="441.0" prefWidth="602.0">
       <children>
-         <Button fx:id="buttonSave" layoutX="23.0" layoutY="319.0" mnemonicParsing="false" prefHeight="42.0" prefWidth="188.0" text="Save" />
-         <Button fx:id="buttonLoad" layoutX="334.0" layoutY="319.0" mnemonicParsing="false" prefHeight="42.0" prefWidth="188.0" text="Load" />
-         <TableView fx:id="tableViewBooks" layoutX="-20.0" layoutY="-17.0" onSort="#fillTable" prefHeight="318.0" prefWidth="597.0">
+         <Button fx:id="buttonSave" layoutX="23.0" layoutY="319.0" mnemonicParsing="false" onAction="#saveBooks" prefHeight="42.0" prefWidth="188.0" text="Save" />
+         <Button fx:id="buttonLoad" layoutX="334.0" layoutY="319.0" mnemonicParsing="false" onAction="#loadBooks" prefHeight="42.0" prefWidth="188.0" text="Load" />
+         <TableView fx:id="tableViewBooks" layoutX="-20.0" layoutY="-17.0" prefHeight="318.0" prefWidth="597.0">
            <columns>
-             <TableColumn fx:id="tableColumnISBN" prefWidth="46.66668891906738" text="ISBN" />
-             <TableColumn fx:id="tableColumnTITLE" prefWidth="153.33331680297852" text="TITLE" />
-               <TableColumn fx:id="tableColumnAUTHOR" prefWidth="103.33335876464844" text="AUTHOR" />
-               <TableColumn fx:id="tableColumnGENRE" prefWidth="91.333251953125" text="GENRE" />
-               <TableColumn fx:id="tableColumnDESCRIPTION" prefWidth="197.33340454101562" text="DESCRIPTION" />
+             <TableColumn fx:id="tableColumnISBN" prefWidth="46.66668891906738" text="Isbn" />
+             <TableColumn fx:id="tableColumnTITLE" prefWidth="153.33331680297852" text="Title" />
+               <TableColumn fx:id="tableColumnAUTHOR" prefWidth="103.33335876464844" text="Author" />
+               <TableColumn fx:id="tableColumnGENRE" prefWidth="91.333251953125" text="Genre" />
+               <TableColumn fx:id="tableColumnDESCRIPTION" prefWidth="197.33340454101562" text="Description" />
            </columns>
          </TableView>
       </children>
