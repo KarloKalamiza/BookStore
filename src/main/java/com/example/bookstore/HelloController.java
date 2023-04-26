@@ -11,10 +11,8 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
-
 import java.io.*;
 import java.net.URL;
-import java.security.PublicKey;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -22,35 +20,25 @@ import java.util.ResourceBundle;
 public class HelloController implements Initializable {
     @FXML
     private Button buttonSave;
-
     @FXML
     private Button buttonLoad;
-
     @FXML
     private TableView<Book> tableViewBooks;
-
     @FXML
     private TableColumn<Book, String> tableColumnISBN;
-
     @FXML
     private TableColumn<Book, String> tableColumnTITLE;
-
     @FXML
     private TableColumn<Book, String> tableColumnAUTHOR;
-
     @FXML
     private TableColumn<Book, String> tableColumnDESCRIPTION;
-
     @FXML
     private TableColumn<Book, String> tableColumnGENRE;
-
     // Create a TableView and its columns
     TableView<Book> tableView = new TableView<>();
-
     private final File dataFile = new File("data.txt");
-    private boolean isSaving;
-    private boolean isLoading;
-
+    private final Object lock = new Object(); // shared lock object
+    private boolean isSaved = false; // shared flag
     ObservableList<Book> books = FXCollections.observableArrayList(
             new Book("0001", "The Bible", "Various authors", "SF", "The holy scripture of Christianity, the Bible is the world's best-selling book of all time."),
             new Book("0002", "Don Quixote", "Miguel de Cervantes", "historic", "A Spanish novel published in 1605, considered one of the greatest works of fiction ever written."),
@@ -62,7 +50,6 @@ public class HelloController implements Initializable {
             new Book("0008", "Pride and Prejudice", "Jane Austen", "romantic", " A romantic novel published in 1813, which has become a classic of English literature and a touchstone for discussions of gender roles and social class."),
             new Book("0009", "The Diary of a Young Girl", "Anne Frank", "diary", "A diary written by a young Jewish girl during the Nazi occupation of the Netherlands, which has become a classic of Holocaust literature and a testament to the resilience of the human spirit.")
     );
-
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         String isbn = "Isbn";
@@ -78,24 +65,12 @@ public class HelloController implements Initializable {
 
         tableViewBooks.setItems(books);
     }
-
-
     public void saveBooks(){
-        if (!isSaving){
-            isSaving = true;
-            new Thread(new SaveTask()).start();
-            showAlert("Success", "Books SAVED!", "Saving successfull!");
-        }
+        new Thread(new SaveTask()).start();
     }
-
     public void loadBooks(){
-        if (!isLoading){
-            isLoading = true;
-            new Thread(new LoadTask()).start();
-            showAlert("Success", "Books LOADED!", "Loading successfull!");
-        }
+        new Thread(new LoadTask()).start();
     }
-
     private void saveDataToFile() throws IOException {
         List<Book> data = tableViewBooks.getItems();
         try(PrintWriter writer = new PrintWriter(new FileWriter(dataFile))) {
@@ -107,7 +82,6 @@ public class HelloController implements Initializable {
             tableViewBooks.getItems().clear();
         }
     }
-
     private static void showAlert(
             String title, String header, String content
     ) {
@@ -117,7 +91,6 @@ public class HelloController implements Initializable {
         alert.setContentText(content);
         alert.showAndWait();
     }
-
     private void loadDataFromFile() throws IOException {
         List<Book> data = new ArrayList<>();
         try (BufferedReader reader = new BufferedReader(new FileReader(dataFile))) {
@@ -128,41 +101,38 @@ public class HelloController implements Initializable {
                 data.add(book);
             }
         }
-        tableView.getItems().setAll(data);
+        tableViewBooks.setItems(FXCollections.observableArrayList(data));
     }
-
     private class SaveTask extends Task<Void> {
         @Override
         protected Void call() throws Exception {
-            synchronized(HelloController.this) {
+            synchronized(lock) {
                 saveDataToFile();
-                isSaving = false;
-                HelloController.this.notifyAll();
+                isSaved = true;
+                lock.notifyAll();
             }
 
             return null;
         }
     }
-
     private class LoadTask extends Task<Void>{
-
         @Override
         protected Void call() throws Exception {
-            synchronized (HelloController.this) {
+            synchronized (lock) {
+                while (!isSaved){
+                    lock.wait();
+                }
                 loadDataFromFile();
-                isLoading = false;
-                HelloController.this.notifyAll();
             }
-
             return null;
+        }
+        @Override
+        protected void scheduled() {
+            synchronized (lock) {
+                if (!isSaved){
+                    showAlert("WARNING", "BOOKS CANNOT LOAD!", "LOADTASK CALLED BEFORE SAVETASK!");
+                }
+            }
         }
     }
 }
-
-
-
-
-
-
-
-
